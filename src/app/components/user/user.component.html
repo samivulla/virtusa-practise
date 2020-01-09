@@ -1,3 +1,14 @@
+<p><b>Below Name is displaying using Behaviour Subject</b></p>
+<P>{{behaviourData}}</P>
+<p><b>For Below Functionality  used State Management</b></p>
+<button id="increment" (click)="increment()">Increment</button>
+<button id="decrement" (click)="decrement()">Decrement</button>
+<button id="reset" (click)="reset()">Reset Counter</button>
+<br>
+<div>Current Count: {{ count$ | async }}</div>
+<br>
+<br>
+<p><b>For Below Functionality  used Angular InMemory</b></p>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
     Add User
 </button>

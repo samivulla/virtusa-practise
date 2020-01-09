@@ -4,6 +4,9 @@ import { Observable } from "rxjs";
 import { switchMap } from "rxjs/operators";
 import { CurdserviceService } from "../../service/curdservice.service";
 import { Hero } from "../../models/hero";
+import { BehaviourService } from '../../service/behaviour.service';
+import { Store, select } from '@ngrx/store';
+import { increment, decrement, reset } from '../../store/counter.action';
 declare var $: any;
 @Component({
   selector: "app-user",
@@ -18,22 +21,33 @@ export class UserComponent implements OnInit {
   value: string;
   public heroes: Hero[];
   private selectedData: any;
+  public behaviourData: string;
+  count$: Observable<number>;
   constructor(
     private route: ActivatedRoute,
-    private curdserviceService: CurdserviceService
-  ) {}
+    private curdserviceService: CurdserviceService,
+    private behaviourService: BehaviourService,
+    private store: Store<{ count: number }>
+  ) {
+    this.count$ = store.pipe(select('count'));
+  }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.userData = JSON.parse(params.data);
     });
     this.getUsers();
+    this.behaviourService.data.subscribe(data => {
+      this.behaviourData = data;
+      //do what ever needs doing when data changes
+    });
   }
 
   getUsers() {
     this.curdserviceService.getHeroes().subscribe(data => {
       this.heroes = data;
     });
+    this.behaviourService.updatedDataSelection('samivulla');
   }
 
   // getSelectedUser(id) {
@@ -77,5 +91,17 @@ export class UserComponent implements OnInit {
     this.curdserviceService.deleteUser(id).subscribe(data => {
       this.getUsers();
     });
+  }
+
+  increment() {
+    this.store.dispatch(increment());
+  }
+
+  decrement() {
+    this.store.dispatch(decrement());
+  }
+
+  reset() {
+    this.store.dispatch(reset());
   }
 }

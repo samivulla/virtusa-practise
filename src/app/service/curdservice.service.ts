@@ -63,4 +63,8 @@ export class CurdserviceService {
     return age;
   }
 
+  // getData() {
+  //   return this.http.get('https://api.myjson.com/bins/gng7c');
+  // }
+
 }
